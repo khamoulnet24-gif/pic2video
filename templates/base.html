@@ -1,0 +1,26 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ meta_description }}">
+  <link rel="canonical" href="{{ canonical }}">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ meta_description }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:image" content="{{ og_image }}">
+  <link rel="stylesheet" href="/static/style.css">
+  <script type="application/ld+json">{{ jsonld | safe }}</script>
+</head>
+<body>
+<main>
+  {% block content %}{% endblock %}
+  <footer>
+    <nav>
+      <a href="/">Accueil</a> | <a href="/blog">Blog</a> | <a href="/creer-video-tiktok">TikTok</a>
+    </nav>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,17 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<h1>{{ h1 }}</h1>
+<p>{{ intro }}</p>
+<form id="form">
+  <input type="file" name="photos" multiple accept="image/*" required>
+  <input type="file" name="audio" accept="audio/*" required>
+  <input type="hidden" name="ratio" value="{{ ratio }}">
+  <input type="hidden" name="quality" value="{{ quality }}">
+  <button type="submit">Créer</button>
+</form>
+{% for s in sections %}
+  <h2>{{ s.h2 }}</h2>
+  {% if s.list %}<ul>{% for i in s.list %}<li>{{ i }}</li>{% endfor %}</ul>{% endif %}
+  {% if s.body %}{% for p in s.body %}<p>{{ p }}</p>{% endfor %}{% endif %}
+{% endfor %}
+{% endblock %}

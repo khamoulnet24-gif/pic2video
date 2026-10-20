@@ -1,0 +1,94 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<h1>Pics2Video</h1>
+<p>Créez une vidéo à partir de vos photos et de votre musique.</p>
+
+<form id="form">
+  <div class="input-group">
+    <label>Photos (plusieurs)</label>
+    <input type="file" name="photos" multiple accept="image/*" required>
+  </div>
+  
+  <div class="input-group">
+    <label>Musique (MP3, WAV)</label>
+    <input type="file" name="audio" accept="audio/*" required>
+  </div>
+
+  <div class="input-group">
+    <label>Format</label>
+    <select name="ratio">
+      <option value="16:9">16:9 · Paysage (YouTube)</option>
+      <option value="9:16">9:16 · Vertical (TikTok)</option>
+      <option value="1:1">1:1 · Carré (Insta)</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Qualité</label>
+    <select name="quality">
+      <option value="720">720p · Rapide</option>
+      <option value="1080" selected>1080p · HD</option>
+    </select>
+  </div>
+
+  <button type="submit" id="submit-btn">Créer la vidéo</button>
+
+  <div id="progress-container" style="display: none; margin-top: 20px;">
+    <div style="background: #eee; border-radius: 8px; overflow: hidden; height: 10px;">
+      <div id="progress-bar" style="background: #111; width: 0%; height: 100%; transition: width 0.3s;"></div>
+    </div>
+    <p id="progress-text" style="text-align: center; font-size: 14px; color: #666; margin-top: 8px;">0 %</p>
+  </div>
+</form>
+
+<script>
+document.getElementById('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const progContainer = document.getElementById('progress-container');
+  const progBar = document.getElementById('progress-bar');
+  const progText = document.getElementById('progress-text');
+  
+  btn.disabled = true;
+  btn.textContent = 'Envoi des fichiers...';
+  progContainer.style.display = 'block';
+  progBar.style.width = '0%';
+  progText.textContent = 'Envoi...';
+
+  const formData = new FormData(e.target);
+  
+  try {
+    const res = await fetch('/generate', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erreur');
+
+    const jobId = data.job_id;
+    btn.textContent = 'Création en cours...';
+
+    const poll = setInterval(async () => {
+      const statusRes = await fetch(`/status/${jobId}`);
+      const statusData = await statusRes.json();
+      
+      progBar.style.width = statusData.progress + '%';
+      progText.textContent = statusData.progress + ' %';
+
+      if (statusData.status === 'done') {
+        clearInterval(poll);
+        btn.textContent = 'Télécharger la vidéo';
+        btn.disabled = false;
+        btn.onclick = () => { window.location.href = `/download/${jobId}`; };
+      } else if (statusData.status === 'error') {
+        clearInterval(poll);
+        btn.textContent = 'Erreur, réessayer';
+        btn.disabled = false;
+        progText.textContent = 'Erreur : ' + statusData.error;
+      }
+    }, 400);
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Créer la vidéo';
+    progText.textContent = 'Erreur : ' + err.message;
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<h1>{{ h1 }}</h1>
+<p>{{ published }} · {{ reading_time }} min</p>
+<p>{{ intro }}</p>
+{% for s in sections %}
+  <h2>{{ s.h2 }}</h2>
+  {% if s.list %}<ul>{% for i in s.list %}<li>{{ i }}</li>{% endfor %}</ul>{% endif %}
+  {% if s.body %}{% for p in s.body %}<p>{{ p }}</p>{% endfor %}{% endif %}
+{% endfor %}
+<a href="{{ cta_url }}">{{ cta }}</a>
+{% endblock %}

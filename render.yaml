@@ -1,0 +1,10 @@
+﻿services:
+  - type: web
+    name: pics2video
+    env: docker
+    plan: starter
+    envVars:
+      - key: WATERMARK_ENABLED
+        value: "true"
+      - key: WATERMARK_TEXT
+        value: "pics2video"

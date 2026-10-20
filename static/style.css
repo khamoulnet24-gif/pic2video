@@ -1,0 +1,14 @@
+﻿body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fafafa; color: #111; padding: 40px; display: flex; justify-content: center; }
+main { max-width: 460px; width: 100%; }
+h1 { text-align: center; margin-bottom: 10px; }
+p { text-align: center; color: #666; margin-bottom: 30px; }
+form { display: flex; flex-direction: column; gap: 20px; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-group label { font-size: 14px; font-weight: 500; color: #333; }
+input, select, button { padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; background: white; }
+button { background: #111; color: white; cursor: pointer; border: none; transition: opacity 0.2s; }
+button:hover { opacity: 0.85; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+footer { margin-top: 50px; text-align: center; font-size: 14px; color: #888; }
+a { color: #111; text-decoration: none; }
+a:hover { text-decoration: underline; }
